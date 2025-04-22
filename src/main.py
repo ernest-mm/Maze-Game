@@ -12,39 +12,67 @@ class Game:
     """Main class responsible only for initializing the game, 
     running the game loop and handling cleanup on exit.
     """
-    
+    # Private class constants
+    __FPS: int = 60
+    __WINDOW_CAPTION: str = "Maze Game"
+
     def __init__(self):
-        # Basic initialization only
-        # No game logic here
+        """
+        Single responsability: initialize the core game infrastructure
+        """
+        self.__init_pygame()
+        self.__init_display()
+        self.__init_game_systems()
+
+    def __init_pygame(self) -> None:
+        """
+        Single responsability: to initialize pygame and it's required modules
+        """
         pygame.init()
         if not pygame.get_init():
             raise RuntimeError("Pygame failed to initialize")
         
         if not pygame.font.get_init():
             pygame.font.init()
-        
-        # Creating the window and the game surface that will be blitted to the window
+
+    def __init_display(self) -> None:
+        """
+        Single responsability: to initialize display related components:
+        - Display resolution
+        - Screen
+        - Game surface
+        - Display caption
+        - Display icon
+        """
         self.__res = Display_resolution()
         self.__screen = pygame.display.set_mode(
             self.__res.get_game_surf_size(),
-            pygame.SCALED | pygame.FULLSCREEN | pygame.NOFRAME
+            pygame.SCALED | pygame.NOFRAME
         )
-        pygame.display.set_caption("Maze Game")
-        # self.ICON = pygame.image.load("PATH")
-        # pygame.display.set_icon(self.ICON)
+        pygame.display.set_caption(self.__WINDOW_CAPTION)
+        # TODO:self.ICON = pygame.image.load("PATH")
+        # TODO: pygame.display.set_icon(self.ICON)
         self.__game_surface = pygame.Surface(self.__res.get_game_surf_size())
 
-        # Initialize game manager
+    def __init_game_systems(self) -> None:
+        """
+        Single responsability: Initialize game management systems and scenes
+        """
         self.__game_manager = Game_manager()
-        
-        # Create initial scene (menu)
         self.__current_scene = Main_menu_scene(self.__game_surface, self.__game_manager)
-
         self.__clock = pygame.time.Clock()
         self.__running = True
         
     def run(self):
-        """Run the main game loop."""
+        """
+        Single Responsibility: To execute the main game loop
+        It should only handle the high-level flow of the game:
+        Event handling
+        State updates
+        Rendering
+        Frame rate control
+        It shouldn't contain any game logic specifics, which are delegated to the scenes and game manager
+        """
         while self.__running:
             # Handle events
             for event in pygame.event.get():
@@ -72,14 +100,16 @@ class Game:
             pygame.display.flip()
             
             # Cap the frame rate
-            self.__clock.tick(60)
+            self.__clock.tick(self.__FPS)
             
             # Check if game should quit
             if not self.__game_manager.get_state("running", True):
                 self.__running = False
     
     def cleanup(self):
-        """Clean up resources."""
+        """Single Responsibility: To properly release system resources
+        (like pygame's resources) that were allocated during the game's execution.  
+        """
         pygame.quit()
 
 if __name__ == "__main__":
