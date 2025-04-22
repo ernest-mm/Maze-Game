@@ -1,12 +1,13 @@
 import pygame
 from typing import List, Tuple
 from scenes.base_scene import Base_scene
-from systems.game_state_manager import Game_manager, Scene_type
+from scenes.scene_type import Scene_type
+from systems.game_state_manager import Game_state_manager
 from utils.font import Font
 
 class Main_menu_scene(Base_scene):
-    def __init__(self, screen: pygame.Surface, game_manager: Game_manager) -> None:
-        super().__init__(screen, game_manager)
+    def __init__(self, screen: pygame.Surface, game_state_manager: Game_state_manager) -> None:
+        super().__init__(screen, game_state_manager)
         self.__options: List[str] = ["Start Game", "Options", "Quit"]
         self.__selected: int = 0
         self.__font = Font.get_font(74)
@@ -81,11 +82,11 @@ class Main_menu_scene(Base_scene):
         selected_option = self.__options[self.__selected]
         
         if selected_option == "Start Game":
-            self._game_manager.set_state("current_scene", Scene_type.GAME)
+            self._game_state_manager.set_state("current_scene", Scene_type.GAME)
         elif selected_option == "Options":
-            self._game_manager.set_state("current_scene", Scene_type.OPTIONS)
+            self._game_state_manager.set_state("current_scene", Scene_type.OPTIONS)
         elif selected_option == "Quit":
-            self._game_manager.set_state("running", False)
+            self._game_state_manager.set_state("running", False)
     
     def render(self) -> None:
         """Render menu options."""

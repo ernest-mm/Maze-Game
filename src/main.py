@@ -6,7 +6,7 @@ import pygame
 import sys
 from utils.display_resolution import Display_resolution
 from scenes.main_menu_scene import Main_menu_scene
-from systems.game_manager import Game_manager
+from systems.game_state_manager import Game_state_manager
 
 class Game:
     """Main class responsible only for initializing the game, 
@@ -58,8 +58,8 @@ class Game:
         """
         Single responsability: Initialize game management systems and scenes
         """
-        self.__game_manager = Game_manager()
-        self.__current_scene = Main_menu_scene(self.__game_surface, self.__game_manager)
+        self.__game_state_manager = Game_state_manager()
+        self.__current_scene = Main_menu_scene(self.__game_surface, self.__game_state_manager)
         self.__clock = pygame.time.Clock()
         self.__running = True
         
@@ -103,7 +103,7 @@ class Game:
             self.__clock.tick(self.__FPS)
             
             # Check if game should quit
-            if not self.__game_manager.get_state("running", True):
+            if not self.__game_state_manager.get_state("running", True):
                 self.__running = False
     
     def cleanup(self):

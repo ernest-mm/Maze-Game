@@ -1,12 +1,5 @@
 from typing import Dict, Any
-from enum import Enum, auto
-
-class Scene_type(Enum):
-    """Available scene types."""
-    MENU = auto()
-    GAME = auto()
-    OPTIONS = auto()
-    GAME_OVER = auto()
+from scenes.scene_type import Scene_type
 
 class Game_state_manager:
     """Responsible for managing game state."""
