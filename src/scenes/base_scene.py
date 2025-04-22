@@ -1,10 +1,10 @@
 import pygame
-from systems.game_manager import Game_manager
+from systems.game_state_manager import Game_state_manager
 
 class Base_scene:
-    def __init__(self, screen: pygame.Surface, game_manager: Game_manager) -> None:
+    def __init__(self, screen: pygame.Surface, game_manager: Game_state_manager) -> None:
         self._screen = screen
-        self._game_manager = game_manager
+        self._game_state_manager = game_manager
         self._is_active = True 
     
     def handle_event(self, event: pygame.event.Event) -> None:

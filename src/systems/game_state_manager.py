@@ -1,4 +1,4 @@
-from typing import Dict, Any, Optional
+from typing import Dict, Any
 from enum import Enum, auto
 
 class Scene_type(Enum):
@@ -8,7 +8,8 @@ class Scene_type(Enum):
     OPTIONS = auto()
     GAME_OVER = auto()
 
-class Game_manager:
+class Game_state_manager:
+    """Responsible for managing game state."""
     def __init__(self) -> None:
         self.__game_state: Dict[str, Any] = {
             "score": 0,
@@ -16,7 +17,6 @@ class Game_manager:
             "current_scene": Scene_type.MENU,
             "running": True
         }
-        self.__systems: Dict[str, Any] = {}
     
     def get_state(self, key: str, default: Any = None) -> Any:
         """Get value from game state.
@@ -43,26 +43,3 @@ class Game_manager:
             value: Value to set
         """
         self.__game_state[key] = value
-    
-    def register_system(self, name: str, system: Any) -> None:
-        """Register a game system.
-        
-        Args:
-            name: System name
-            system: System instance
-        """
-        self.__systems[name] = system
-    
-    def get_system(self, name: str) -> Optional[Any]:
-        """Get a registered system.
-        
-        Args:
-            name: System name to retrieve
-            
-        Returns:
-            System instance if found, None otherwise
-        """
-        try:
-            return self.__systems.get(name) 
-        except KeyError:
-            raise KeyError(f"System '{name}' not found. Available systems: {list(self.__systems.keys())}")

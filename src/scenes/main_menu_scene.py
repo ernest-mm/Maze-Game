@@ -1,7 +1,7 @@
 import pygame
 from typing import List, Tuple
 from scenes.base_scene import Base_scene
-from systems.game_manager import Game_manager, Scene_type
+from systems.game_state_manager import Game_manager, Scene_type
 from utils.font import Font
 
 class Main_menu_scene(Base_scene):
